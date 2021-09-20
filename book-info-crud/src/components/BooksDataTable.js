@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 const axios = require('axios').default;
 
-function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate}}){
+function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate,authorsNames,authorsId}}){
     const [formData, setFormData] = useState(()=>names.reduce((obj,curr)=>({...obj, [curr]:''}),{}));
     const [editingRow, setEditingRow] = useState(-1);
+    const subrow = 4;
 
     function handleOnChange(e){
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -45,6 +46,13 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                         (editingRow===-1)?(<tr className="text-center" >
                         {
                             headings.map((heading, idx)=>{
+                                if(idx===subrow){
+                                    return (
+                                        <select name={names[subrow]} value={formData[names[idx]]} onChange={handleOnChange}>
+                                            {authorsNames.map((val,idx)=>(<option value={authorsId[idx]}>{val}</option>))}
+                                        </select>
+                                    )
+                                }
                                 return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={formData[names[idx]]}/> </td> 
                             })
                         }
@@ -60,18 +68,25 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                                 <tr className="text-center" >
                                     {
                                         headings.map((heading, idx)=>{
+                                            if(idx===subrow){
+                                                return (
+                                                    <select name={names[subrow]} value={formData[names[idx]]} onChange={handleOnChange}>
+                                                        {authorsNames.map((val,idx)=>(<option value={authorsId[idx]}>{val}</option>))}
+                                                    </select>
+                                                )
+                                            }
                                             return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={formData[names[idx]]}/> </td> 
                                         })
                                     }
                                     <td>
                                         <i onClick={handleUpdate} className="fa fa-save text-blue-600 font-bold text-lg px-2 py-0 rounded-full bg-gray-300 mx-2"></i>
-                                    </td>  
+                                    </td>
                                 </tr>
                             ):(
                                 <tr className="text-center" key={dataRow[0]}>
                                     {dataRow.map((val,idx)=>{
                                         return (
-                                            <td className='break-words' key={idx}>{val}</td>
+                                            <td className='break-words' key={idx}>{(idx===subrow)?authorsNames[val]:val}</td>
                                         )
                                     })}
                                     <td>

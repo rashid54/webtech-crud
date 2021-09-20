@@ -7,12 +7,9 @@ const axios = require('axios').default
 function Books(){
     const [allData, setAllData] = useState(
         {
-            names: ["id", "title", "price", "publishedIn"],
-            headings: ["ID", "Title", "Price", "Published in",],
-            dataRows: [
-                [3,"Digital Fortress", "56", "2011",],
-                [4,"Book 3", "39", "2042",],
-            ],
+            names: ["id", "title", "price", "author"],
+            headings: ["ID", "Title", "Price", "Author",],
+            dataRows: [],
             authorsName: [],
             authorsId: [],
             onDelete: (id)=> true,
@@ -30,6 +27,8 @@ function Books(){
             setAllData({...allData,
                 names: Object.keys(allBooks[0]),
                 dataRows: allBooks.reduce((arr,curr)=>([...arr, Object.values(curr)]),[]),
+                authorsName: allAuthors.reduce((accu,curr)=>([...accu,curr.name]),[]),
+                authorsId: allAuthors.reduce((accu,curr)=>([...accu,curr.id]),[]),
             })
         })
     
