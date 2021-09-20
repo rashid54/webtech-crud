@@ -3,11 +3,11 @@ import Navbar from "./Navbar";
 import BooksDataTable from "./BooksDataTable";
 const axios = require('axios').default
 
-function Books(){
+function Reviews(){
     const [allData, setAllData] = useState(
         {
-            names: ["id", "title", "price", "author"],
-            headings: ["ID", "Title", "Price", "Author",],
+            names: ["id", "description", "rating", "book"],
+            headings: ["ID", "Description", "Rating", "Book",],
             dataRows: [],
             authorsName: [],
             authorsId: [],
@@ -16,9 +16,10 @@ function Books(){
             onCreate: postData,
         }
     )
+    const baseUrl = 'http://localhost:8000/api/allbook/review/';
+    const subUrl = 'http://localhost:8000/api/allbook/book/' ;
 
-    const baseUrl = 'http://localhost:8000/api/allbook/book/';
-    const subUrl = 'http://localhost:8000/api/author/' ;
+    console.log(allData);
 
     useEffect(()=>{
         Promise.all([axios.get(baseUrl),axios.get(subUrl)])
@@ -33,14 +34,14 @@ function Books(){
                 newdata.dataRows = allBooks.reduce((arr,curr)=>([...arr, Object.values(curr)]),[]);
             }
             if(allAuthors){
-                newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.name]),[]);
+                newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.title]),[]);
                 newdata.authorsId = allAuthors.reduce((accu,curr)=>([...accu,curr.id]),[]);
             }
 
             setAllData(newdata);
         })
     
-    },[])
+    },[ ])
 
     function postData(val){
         const url = baseUrl;
@@ -62,10 +63,10 @@ function Books(){
                     newdata.dataRows = allBooks.reduce((arr,curr)=>([...arr, Object.values(curr)]),[]);
                 }
                 if(allAuthors){
-                    newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.name]),[]);
+                    newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.title]),[]);
                     newdata.authorsId = allAuthors.reduce((accu,curr)=>([...accu,curr.id]),[]);
                 }
-    
+
                 setAllData(newdata);
             })
             .catch((error)=>console.log(error))
@@ -84,7 +85,7 @@ function Books(){
             .then((results)=>{
                 const allBooks = results[0].data
                 const allAuthors = results[1].data
-    
+
                 const newdata= {...allData};
 
                 if(allBooks[0]){
@@ -92,10 +93,10 @@ function Books(){
                     newdata.dataRows = allBooks.reduce((arr,curr)=>([...arr, Object.values(curr)]),[]);
                 }
                 if(allAuthors){
-                    newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.name]),[]);
+                    newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.title]),[]);
                     newdata.authorsId = allAuthors.reduce((accu,curr)=>([...accu,curr.id]),[]);
                 }
-    
+
                 setAllData(newdata);
             })
             .catch((error)=>console.log(error))
@@ -113,7 +114,7 @@ function Books(){
             .then((results)=>{
                 const allBooks = results[0].data
                 const allAuthors = results[1].data
-    
+
                 const newdata= {...allData};
 
                 if(allBooks[0]){
@@ -121,10 +122,10 @@ function Books(){
                     newdata.dataRows = allBooks.reduce((arr,curr)=>([...arr, Object.values(curr)]),[]);
                 }
                 if(allAuthors){
-                    newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.name]),[]);
+                    newdata.authorsName = allAuthors.reduce((accu,curr)=>([...accu,curr.title]),[]);
                     newdata.authorsId = allAuthors.reduce((accu,curr)=>([...accu,curr.id]),[]);
                 }
-    
+
                 setAllData(newdata);
             })
             .catch((error)=>console.log(error))
@@ -140,4 +141,4 @@ function Books(){
     )
 }
 
-export default Books;
+export default Reviews;

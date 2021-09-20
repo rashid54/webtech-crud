@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 const axios = require('axios').default;
 
-function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate,authorsNames,authorsId}}){
-    const [formData, setFormData] = useState(()=>names.reduce((obj,curr)=>({...obj, [curr]:''}),{}));
+function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate,authorsName,authorsId}}){
+    const subrow = 3;
+    const [formData, setFormData] = useState(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:(idx===subrow)?authorsId[0]:''}),{}));
     const [editingRow, setEditingRow] = useState(-1);
-    const subrow = 4;
 
     function handleOnChange(e){
         setFormData({...formData, [e.target.name]: e.target.value});
+        console.log(authorsId)
     }
     
     function handleEditingMode(rowId){
@@ -18,13 +19,13 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
     function handleDelete(rowId){
         onDelete(dataRows[rowId][0]);
         setEditingRow(-1);
-        setFormData(()=>names.reduce((obj,curr)=>({...obj, [curr]:''}),{}));
+        setFormData(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:(idx===subrow)?authorsId[0]:''}),{}));
     }
 
     function handleUpdate(e){
         onUpdate(formData,formData.id);
         setEditingRow(-1);
-        setFormData(()=>names.reduce((obj,curr)=>({...obj, [curr]:''}),{}));
+        setFormData(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:(idx===subrow)?authorsId[0]:''}),{}));
     }
 
     function handleCreate(e){
@@ -49,7 +50,7 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                                 if(idx===subrow){
                                     return (
                                         <select name={names[subrow]} value={formData[names[idx]]} onChange={handleOnChange}>
-                                            {authorsNames.map((val,idx)=>(<option value={authorsId[idx]}>{val}</option>))}
+                                            {authorsName.map((val,idx)=>(<option value={authorsId[idx]}>{val}</option>))}
                                         </select>
                                     )
                                 }
@@ -71,7 +72,7 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                                             if(idx===subrow){
                                                 return (
                                                     <select name={names[subrow]} value={formData[names[idx]]} onChange={handleOnChange}>
-                                                        {authorsNames.map((val,idx)=>(<option value={authorsId[idx]}>{val}</option>))}
+                                                        {authorsName.map((val,idx)=>(<option value={authorsId[idx]}>{val}</option>))}
                                                     </select>
                                                 )
                                             }
@@ -86,7 +87,7 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                                 <tr className="text-center" key={dataRow[0]}>
                                     {dataRow.map((val,idx)=>{
                                         return (
-                                            <td className='break-words' key={idx}>{(idx===subrow)?authorsNames[val]:val}</td>
+                                            <td className='break-words' key={idx}>{(idx===subrow)?authorsName[authorsId.findIndex((id)=>(id===val))]:val}</td>
                                         )
                                     })}
                                     <td>

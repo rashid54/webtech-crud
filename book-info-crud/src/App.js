@@ -3,6 +3,7 @@ import Authors from './components/Authors';
 import BookAuthor from './components/BookAuthor';
 import Books from './components/Books';
 import Home from './components/Home'
+import Reviews from './components/Reviews';
 import GlobalContext from './contexts/GlobalContext';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/books" component={Books} />
           <Route exact path="/authors" component={Authors} />
+          <Route exact path="/reviews" component={Reviews} />
           <Route exact path="/book-author" component={BookAuthor} />
         </Switch>
       </Router>
