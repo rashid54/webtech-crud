@@ -5,7 +5,7 @@ const axios = require('axios').default
 
 function Authors(){
     const [allData, setAllData] = useState({
-        names: [],
+        names: ["id", "name", "description"],
         headings: ["ID", "Name", "Description", ],
         dataRows: [],
         onDelete: deleteData,
@@ -17,8 +17,8 @@ function Authors(){
       getData();
     },[])
 
-    function getData(){
-        axios.get('http://localhost:8000/api/author/')
+    async function getData(){
+        await axios.get('http://localhost:8000/api/author/')
         .then((response)=>{
             const responseData = response.data;
             if (response.status===200 && responseData[0]){
@@ -36,10 +36,11 @@ function Authors(){
 
     function postData(val){
         const url = 'http://localhost:8000/api/author/';
+        console.log("starting to post author");
         axios.post(url, val)
             .then((response)=>{
                 if(response.status === 201){
-                    return axios.get('http://localhost:8000/api/author/');
+                    return axios.get(url);
                 }
 
             })
@@ -55,7 +56,7 @@ function Authors(){
                     })
                 }
             })
-            .catch((error)=>console.log(error))
+            .catch((error)=>console.log("the error is"+error))
 
     }
 
@@ -94,12 +95,8 @@ function Authors(){
             })
             .then((response)=>{
                 const responseData = response.data;
-                if (response.status===200 && responseData[0]){
-                    allData.names = Object.keys(responseData[0]);
-                    allData.dataRows = responseData.reduce((arr,curr)=>([...arr, Object.values(curr)]),[]);
-
+                if (response.status===200 ){
                     setAllData({...allData,
-                        names: Object.keys(responseData[0]),
                         dataRows: responseData.reduce((arr,curr)=>([...arr, Object.values(curr)]),[]),
                     })
                 }

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-const axios = require('axios').default;
 
 function DataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate}}){
     const [formData, setFormData] = useState(()=>names.reduce((obj,curr)=>({...obj, [curr]:''}),{}));
     const [editingRow, setEditingRow] = useState(-1);
 
     function handleOnChange(e){
-        setFormData({...formData, [e.target.name]: e.target.value});
+        if(e.target.name!=='id'){
+            setFormData({...formData, [e.target.name]: e.target.value});
+        }
     }
     
     function handleEditingMode(rowId){
@@ -36,7 +37,7 @@ function DataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate}
             <table className=" border-separate table-fixed w-full p-5 text-xs sm:text-base">
                 <thead>
                     <tr className='bg-blue-100 ml-auto '>
-                        {headings.map((heading)=><th>{heading}</th>)}
+                        {headings.map((heading)=><th key={heading}>{heading}</th>)}
                         <th>Options</th>
                     </tr>
                 </thead>
@@ -45,7 +46,7 @@ function DataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate}
                         (editingRow===-1)?(<tr className="text-center" >
                         {
                             headings.map((heading, idx)=>{
-                                return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={formData[names[idx]]}/> </td> 
+                                return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={idx===0?"auto":formData[names[idx]]}/> </td> 
                             })
                         }
                         <td>
@@ -57,7 +58,7 @@ function DataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate}
                     {
                         dataRows && dataRows.map((dataRow,rowId)=>{
                             return (editingRow===rowId)?(
-                                <tr className="text-center" >
+                                <tr className="text-center" key={dataRow[0]} >
                                     {
                                         headings.map((heading, idx)=>{
                                             return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={formData[names[idx]]}/> </td> 
