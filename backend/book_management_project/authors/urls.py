@@ -4,8 +4,8 @@ from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register('', views.AuthorViewSet)
+router.register('author', views.AuthorViewSet)
 
 urlpatterns=[
-    path('', include(router.urls)),
+    path('/', include(router.urls)),
 ]
