@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import DataTable from "./DataTable";
+import BooksDataTable from "./BookAuthorDataTable";
 const axios = require('axios').default
 
 function BookAuthor(){
@@ -45,7 +46,7 @@ function BookAuthor(){
     return (
         <div className="home bg-gray-100">
             <Navbar />
-            <DataTable allData={allData}/>
+            <BooksDataTable allData={allData}/>
 
 
         </div>
