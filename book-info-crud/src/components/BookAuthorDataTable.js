@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 const axios = require('axios').default;
 
-function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate,authorsName,authorsId}}){
+function BookAuthorDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate,authorsName,authorsId}}){
     const subrow = 3;
-    const [formData, setFormData] = useState(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:(((idx===subrow)&&authorsId[0])||'')}),{}));
+    const [formData, setFormData] = useState(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:''}),{}));
     const [editingRow, setEditingRow] = useState(-1);
+    dataRows.map(dataRow=>({...dataRow, [names[subrow]]: authorsName[authorsId.findIndex((id)=>(id===dataRow[names[subrow]]))]}));
 
     console.log(formData);
     console.log(authorsId);
@@ -23,13 +24,13 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
     function handleDelete(rowId){
         onDelete(dataRows[rowId][0]);
         setEditingRow(-1);
-        setFormData(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:(idx===subrow)?authorsId[0]:''}),{}));
+        setFormData(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:''}),{}));
     }
 
     function handleUpdate(e){
         onUpdate(formData,formData.id);
         setEditingRow(-1);
-        setFormData(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:(idx===subrow)?authorsId[0]:''}),{}));
+        setFormData(()=>names.reduce((obj,curr,idx)=>({...obj, [curr]:''}),{}));
     }
 
     function handleCreate(e){
@@ -51,15 +52,15 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                         (editingRow===-1)?(<tr className="text-center" >
                         {
                             headings.map((heading, idx)=>{
-                                if(idx===subrow){
-                                    return (
-                                        <select key={idx} name={names[subrow]} value={formData[names[idx]]} onChange={handleOnChange}>
-                                            <option value=""> Select</option> 
-                                            {authorsName.map((val,idx)=>(<option key={val} value={authorsId[idx]}>{val}</option>))}
-                                        </select>
-                                    )
-                                }
-                                return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={idx===0?"auto":formData[names[idx]]}/> </td> 
+                                // if(idx===subrow){
+                                //     return (
+                                //         <select key={idx} name={names[subrow]} value={formData[names[idx]]} onChange={handleOnChange}>
+                                //             <option value=""> Select</option> 
+                                //             {authorsName.map((val,idx)=>(<option key={val} value={authorsId[idx]}>{val}</option>))}
+                                //         </select>
+                                //     )
+                                // }
+                                return <td key={idx} ><input type="text" hidden={idx===0} placeholder={heading} onChange={handleOnChange} name={names[idx]} value={formData[names[idx]]}/> </td> 
                             })
                         }
                         <td>
@@ -76,9 +77,7 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                                         headings.map((heading, idx)=>{
                                             if(idx===subrow){
                                                 return (
-                                                    <select key={idx} name={names[subrow]} value={formData[names[idx]]} onChange={handleOnChange}>
-                                                        {authorsName.map((val,idx)=>(<option key={val} value={authorsId[idx]}>{val}</option>))}
-                                                    </select>
+                                                    <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={authorsName[authorsId.findIndex((id)=>(id===formData[names[idx]]))]}/> </td>
                                                 )
                                             }
                                             return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={formData[names[idx]]}/> </td> 
@@ -109,4 +108,4 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
     )
 }
 
-export default BooksDataTable;
+export default BookAuthorDataTable;

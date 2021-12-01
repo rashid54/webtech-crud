@@ -11,7 +11,7 @@ function App() {
     <GlobalContext>
       <Router>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Books} />
           <Route exact path="/books" component={Books} />
           <Route exact path="/authors" component={Authors} />
           <Route exact path="/reviews" component={Reviews} />

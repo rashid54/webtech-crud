@@ -59,7 +59,7 @@ function BooksDataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUp
                                         </select>
                                     )
                                 }
-                                return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={idx===0?"auto":formData[names[idx]]}/> </td> 
+                                return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} hidden={idx===0} value={formData[names[idx]]}/> </td> 
                             })
                         }
                         <td>

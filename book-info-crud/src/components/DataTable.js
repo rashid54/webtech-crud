@@ -46,7 +46,7 @@ function DataTable({allData:{names,headings,dataRows,onCreate,onDelete,onUpdate}
                         (editingRow===-1)?(<tr className="text-center" >
                         {
                             headings.map((heading, idx)=>{
-                                return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} value={idx===0?"auto":formData[names[idx]]}/> </td> 
+                                return <td key={idx} ><input type="text" placeholder={heading} onChange={handleOnChange} name={names[idx]} hidden={idx===0} value={formData[names[idx]]}/> </td> 
                             })
                         }
                         <td>
